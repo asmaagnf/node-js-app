@@ -44,4 +44,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
-  type: LoadBalancer  # This will create an external IP, useful for accessing the app externally
+  type: LoadBalancer  
