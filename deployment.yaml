@@ -18,8 +18,8 @@ spec:
         kubernetes.io/role: worker
       containers:
         - name: my-nodejs-app
-          image: asmaagf/node-js-app:latest
-          imagePullPolicy: Always  # ✅ Force Kubernetes to always pull latest image
+          image: asmaagf/node-js-app:latest  # Default, but will be replaced dynamically
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
@@ -32,17 +32,3 @@ spec:
             requests:
               cpu: "100m"
               memory: "256Mi"
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-nodejs-app-service
-spec:
-  selector:
-    app: my-nodejs-app
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
-  type: LoadBalancer
