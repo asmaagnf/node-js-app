@@ -19,6 +19,7 @@ spec:
       containers:
         - name: my-nodejs-app
           image: asmaagf/node-js-app:latest
+          imagePullPolicy: Always  # ✅ Force Kubernetes to always pull latest image
           ports:
             - containerPort: 3000
           env:
@@ -44,4 +45,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
-  type: LoadBalancer  
+  type: LoadBalancer

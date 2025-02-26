@@ -28,8 +28,10 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_IMAGE }} .
-          docker push ${{ secrets.DOCKER_IMAGE }}
+          IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)  # Generate short commit SHA as tag
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/node-js-app:$IMAGE_TAG .
+          docker push ${{ secrets.DOCKER_USERNAME }}/node-js-app:$IMAGE_TAG
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV  # Save tag for later use
 
   # Job 2: Run tests 
   test:
@@ -71,5 +73,8 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f deployment.yaml 
-          kubectl set image deployment/my-nodejs-app my-nodejs-app=${{ secrets.DOCKER_IMAGE }}
+          kubectl set image deployment/my-nodejs-app my-nodejs-app=${{ secrets.DOCKER_USERNAME }}/node-js-app:$IMAGE_TAG
           kubectl rollout status deployment/my-nodejs-app
+
+      - name: Restart Kubernetes Deployment
+        run: kubectl rollout restart deployment my-nodejs-app
