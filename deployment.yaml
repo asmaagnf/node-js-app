@@ -5,7 +5,7 @@ metadata:
   labels:
     app: my-nodejs-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: my-nodejs-app
@@ -18,8 +18,8 @@ spec:
         kubernetes.io/role: worker
       containers:
         - name: my-nodejs-app
-          image: asmaagf/node-js-app:latest  # Default, but will be replaced dynamically
-          imagePullPolicy: Always
+          image: asmaagf/node-js-app:latest
+          imagePullPolicy: Always  # Ajouté pour forcer le pull de l'image
           ports:
             - containerPort: 3000
           env:
@@ -32,3 +32,16 @@ spec:
             requests:
               cpu: "100m"
               memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nodejs-app-service
+spec:
+  selector:
+    app: my-nodejs-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
