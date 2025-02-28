@@ -1,43 +1,46 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title> To Do App </title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
     <link href="/styles.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
-        <h2> pipeline test
-         </h2>
+        <h1>To-Do List</h1>
 
         <form action="/addtask" method="POST">
-
-            <input type="text" name="newtask" placeholder="Add new task">
-            <button> Add  </button>
-
-
-            <h2> Added Task </h2>
-
-            <% for( var i=0; i < task.length; i++){ %>
-                <li><input type="checkbox" name="check" value="<%= task[i] %>" />
-                    <%= task[i] %>
-                </li>
-                <% } %>
-
-                    <button formaction="/removetask" type="submit" id="top" class="button"> Remove </button>
+            <input type="text" name="newtask" placeholder="Add a new task..." required>
+            <button type="submit" class="add-btn">Add</button>
         </form>
 
-        <h2> Completed task </h2>
+        <h2>Pending Tasks</h2>
+        <form action="/removetask" method="POST">
+            <ul class="task-list">
+                <% for(var i = 0; i < task.length; i++) { %>
+                    <li>
+                        <input type="checkbox" name="check[]" value="<%= task[i] %>">
+                        <%= task[i] %>
+                    </li>
+                <% } %>
+            </ul>
+            <button type="submit" class="remove-btn">Remove Completed</button>
+        </form>
 
-        <% for(var i=0; i < complete.length; i++){ %>
-            <li><input type="checkbox" checked>
-                <%= complete[i] %>
-            </li>
+        <h2>Completed Tasks</h2>
+        <ul class="task-list completed">
+            <% for(var i = 0; i < complete.length; i++) { %>
+                <li>
+                    <input type="checkbox" checked disabled>
+                    <%= complete[i] %>
+                </li>
             <% } %>
-
+        </ul>
     </div>
-
 </body>
 
 </html>
